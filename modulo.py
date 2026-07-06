@@ -58,10 +58,7 @@ def buscar_rango_precio(precio_min, precio_max, productos, inventario):
 
 
 def buscar_codigo(codigo, productos):
-    for llave in productos.keys():
-        if llave.lower() == codigo.strip().lower():
-            return True
-    return False
+    return codigo.strip().upper() in productos
 
 
 def stock_categoria(categoria, productos, inventario):
@@ -135,14 +132,12 @@ def mostrar_productos(productos, inventario):
         return
     print("Listado de productos:")
     for codigo, datos in productos.items():
-        print(f"""
-            ----------------------------------
-            Código: {codigo},
-            Nombre: {datos[0]},
-            Categoría: {datos[1]},
-            Precio: {datos[2]},
-            Disponible: {datos[3]},
-            Stock: {inventario[codigo][0]},
-            Vendidos: {inventario[codigo][1]}
-            ----------------------------------
-            """)
+        print(f"""----------------------------------
+Código: {codigo}
+Nombre: {datos[0]}
+Categoría: {datos[1]}
+Precio: ${datos[2]}
+Disponible: {'Sí' if datos[3] else 'No'}
+Stock: {inventario[codigo][0]}
+Vendidos: {inventario[codigo][1]}
+----------------------------------""")
