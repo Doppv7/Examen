@@ -27,9 +27,8 @@ def main():
             """)
         opcion = the_m.leer_opcion()
         if opcion == -1:
-            print(
-                "ERROR, la opción ingresada es invalida. Por favor, ingrese una opción válida."
-            )
+            print("Debe seleccionar una opción válida")
+            os.system("pause")
             continue
 
         match opcion:
@@ -53,7 +52,7 @@ def main():
                             "ERROR, el precio mínimo no puede ser mayor al precio máximo."
                         )
                     else:
-                        the_m.buscar_rango_precio(
+                        the_m.buscar_precio(
                             precio_min, precio_max, productos, inventario
                         )
                 except ValueError:
@@ -74,9 +73,7 @@ def main():
                             nuevo_precio = int(
                                 input("Ingrese el nuevo precio del producto:\n")
                             )
-                            if the_m.validar_numero(
-                                str(nuevo_precio), permitir_cero=False
-                            ):
+                            if the_m.validar_precio(str(nuevo_precio)):
                                 the_m.actualizar_precio(codigo, nuevo_precio, productos)
                                 print("¡El precio se actualizo correctamente!")
                             else:
@@ -88,7 +85,7 @@ def main():
                                 "ERROR, debe ingresar un valor númerico entero para el precio."
                             )
                     else:
-                        print("ERROR, el código ingresado no existe en el inventario.")
+                        print("Código inexistente")
 
                     continuar = (
                         input("¿Desea actualizar otro producto?: (s/n):\n")
@@ -103,50 +100,48 @@ def main():
             case 4:
                 os.system("cls")
                 print("===== AGREGAR PRODUCTO =====")
-                codigo = input("Ingrese el codigo del nuevo producto:\n")
-                if not the_m.validar_codigo_nuevo(codigo, productos):
-                    print("ERROR, el código ingresado ya exise o se encuentra vacío.")
-                    input("Presione Enter para continuar...")
+                codigo = input("Ingrese el CÓDIGO del nuevo producto:\n")
+                if not the_m.validar_codigo(codigo, productos):
+                    print(
+                        "ERROR: El código ya existe, está vacío o contiene solo espacios."
+                    )
+                    os.system("pause")
                     continue
-                nombre = input("Ingrese el nombre del nuevo producto:\n")
-                if not the_m.validar_texto(nombre):
-                    print("ERROR, el nombre del producto no puede estar vacío.")
-                    input("Presione Enter para continuar...")
+                nombre = input("Ingrese el NOMBRE del nuevo producto:\n")
+                if not the_m.validar_nombre(nombre):
+                    print("ERROR: El nombre del producto no puede estar vacío.")
+                    os.system("pause")
                     continue
-                categoria = input("Ingrese la categoría del nuevo producto:\n")
-                if not the_m.validar_texto(categoria):
-                    print("ERROR, la categoría del producto no puede estar vacía.")
-                    input("Presione Enter para continuar...")
+                categoria = input("Ingrese la CATEGORÍA del nuevo producto:\n")
+                if not the_m.validar_categoria(categoria):
+                    print("ERROR: La categoría del producto no puede estar vacía.")
+                    os.system("pause")
                     continue
-                precio_str = input("Ingrese el precio del nuevo producto:\n")
-                if not the_m.validar_numero(precio_str, permitir_cero=False):
-                    print("ERROR, el precio debe ser un número entero mayor a cero.")
-                    input("Presione Enter para continuar...")
+                precio_str = input("Ingrese el PRECIO del nuevo producto:\n")
+                if not the_m.validar_precio(precio_str):
+                    print("ERROR: El precio debe ser un número entero mayor que cero.")
+                    os.system("pause")
                     continue
                 disponible_str = input(
-                    "Ingrese la disponibilidad del nuevo producto. Disponible: 's' o No Disponible: 'n':\n"
+                    "Ingrese la disponibilidad ('s' para Disponible / 'n' para No Disponible):\n"
                 )
                 if not the_m.validar_disponibilidad(disponible_str):
-                    print(
-                        "ERROR, ka disponibilidad deber ser 's' para Disponible o 'n' para No Disponible."
-                    )
-                    input("Presione Enter para continuar...")
+                    print("ERROR: La disponibilidad debe ser estrictamente 's' o 'n'.")
+                    os.system("pause")
                     continue
-                stock_str = input("Ingrese la cantidad de stock del nuevo producto:\n")
-                if not the_m.validar_numero(stock_str, permitir_cero=True):
+                stock_str = input("Ingrese la cantidad de STOCK inicial:\n")
+                if not the_m.validar_stock(stock_str):
                     print(
-                        "ERROR, la cantidad de stock debe ser un número entero mayor o igual a cero."
+                        "ERROR: El stock debe ser un número entero mayor o igual a cero."
                     )
-                    input("Presione Enter para continuar...")
+                    os.system("pause")
                     continue
-                vendido_str = input(
-                    "Ingrese la cantidad de preoductos vendidos del nuevo producto:\n"
-                )
-                if not the_m.validar_numero(vendido_str, permitir_cero=True):
+                vendido_str = input("Ingrese la cantidad de productos VENDIDOS:\n")
+                if not the_m.validar_vendidos(vendido_str):
                     print(
-                        "ERROR, la cantidad de productos vendidos debe ser un número entero mayor o igual a cero."
+                        "ERROR: La cantidad de vendidos debe ser un número entero mayor o igual a cero."
                     )
-                    input("Presione Enter para continuar...")
+                    os.system("pause")
                     continue
                 exito = the_m.agregar_producto(
                     codigo,
@@ -160,10 +155,9 @@ def main():
                     inventario,
                 )
                 if exito:
-                    print("¡Producto agregado correctamente!")
+                    print("¡Producto guardado y registrado con éxito en el sistema!")
                 else:
-                    print("Ocurrio un error al agregar el producto.")
-
+                    print("Ocurrió un error inesperado al procesar el registro.")
                 os.system("pause")
 
             case 5:
@@ -191,19 +185,8 @@ def main():
                 break
 
             case _:
-                print("ERROR, opción no valida. Por favor ingrese una opción válida.")
-
-
-# ------------------------el codigo casi me gana, no me ejecutava la prev y no entendi por que
-# ------------------------tuve que pedirle ayuda a mi primo geminiardo y en resumidas cuentas me dijo
-# ------------------------que eso hara que py llame si este archivo (app.py)
-# ------------------------es el que el usuario ejecutó directamente
-# ------------------------(y no un módulo importado) entonces arranca la función main()
-# ------------------------batalle, no se lo negare arturo, pero me enseño mucho, solo que son muchos modulos y cosas que memorizar
-# ------------------------y no me da la cabeza para tanto, pero bueno, lo importante es que aprendi y lo logre
-# ------------------------gracias arturo, ojala poder conseguir el proximo semestre clases con usted
-# ------------------------me gusta mucho su forma de enseñar y explicar
-# ----------------------- y me hace sentir que puedo aprender mucho mas de lo que creia posible
+                print("Debe seleccionar una opción válida")
+                os.system("pause")
 
 
 if __name__ == "__main__":
