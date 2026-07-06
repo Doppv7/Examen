@@ -143,3 +143,6 @@ def mostrar_productos(productos, inventario):
         print(f"Disponible: {datos[3]}")
         print(f"Stock: {inventario[codigo][0]}")
         print(f"Vendidos: {inventario[codigo][1]} --------------------------")
+
+
+# --------------------FINALMENTE ME PUEDO IR A DORMIR XDDDDDD
